@@ -10,7 +10,8 @@ DROP TABLE IF EXISTS locations;
 CREATE TABLE inventory (
     item_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    location VARCHAR(255) NOT NULL,
+    building VARCHAR(255) NOT NULL,
+    room VARCHAR(255) NOT NULL,
     -- condition VARCHAR(100) NOT NULL,
     -- quantity INTEGER NOT NULL,
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
