@@ -44,7 +44,7 @@ def update_inventory(item_id):
     item.name = data.get('name', item.name)
     item.building = data.get('building', item.building)
     item.room = data.get('room', item.room)
-    item.last_updated = datetime.utcnow()
+    item.last_updated = datetime.now()
     db.session.commit()
     return jsonify({'message': 'Item updated successfully'})
 
