@@ -65,6 +65,8 @@ const modalStyles = {
     width: '80%',
     maxWidth: '600px',
     position: 'relative',
+    maxHeight: '80vh', // Prevent modal from exceeding viewport height
+    overflow: 'hidden',
   },
   closeButton: {
     position: 'absolute',
@@ -72,15 +74,17 @@ const modalStyles = {
     right: '10px',
   },
   imageContainer: {
+    maxHeight: '70vh', // Allow scrolling for images
+    overflowY: 'auto',
     display: 'flex',
     flexWrap: 'wrap',
     gap: '10px',
     marginTop: '20px',
   },
   image: {
-    width: '100px',
-    height: '100px',
-    objectFit: 'cover',
+    maxWidth: '100%',
+    maxHeight: '200px', // Scale down large images
+    objectFit: 'contain',
   },
 };
 

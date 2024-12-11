@@ -2,6 +2,10 @@ from app import app, db
 from flask import request, jsonify
 from models import Inventory, Image, Request
 from datetime import datetime
+import os
+from flask import request, jsonify
+from werkzeug.utils import secure_filename
+
 
 # Helper function to serialize Inventory objects
 def inventory_to_dict(item):
@@ -62,7 +66,63 @@ def get_item_images(item_id):
 
     # Return full URLs for the images
     image_list = [
-        {"image_url": url_for('static', filename=f'images/{image.image_url}', _external=True)}
+        {"image_url": url_for('static', filename=image.image_url, _external=True)}
         for image in images
     ]
     return jsonify(image_list)
+
+@app.route('/api/inventory/<int:item_id>/images', methods=['POST'])
+def add_item_image(item_id):
+    data = request.get_json()
+    image_url = data.get('image_url')
+    
+    if not image_url:
+        return jsonify({"error": "Image URL is required"}), 400
+
+    # Check if the item exists
+    item = Inventory.query.get_or_404(item_id)
+
+    # Add the new image to the database
+    new_image = Image(item_id=item_id, image_url=image_url)
+    db.session.add(new_image)
+    db.session.commit()
+
+    return jsonify({"message": f"Image added to item {item_id} successfully"})
+
+
+# Directory to store uploaded images
+UPLOAD_FOLDER = 'static/images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Allowed extensions for image uploads
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/api/inventory/<int:item_id>/images/upload', methods=['POST'])
+def upload_image(item_id):
+    # Check if the item exists
+    item = Inventory.query.get_or_404(item_id)
+
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        # Save the file securely
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # Save the file path to the database
+        image_url = f"images/{filename}"
+        new_image = Image(item_id=item_id, image_url=image_url)
+        db.session.add(new_image)
+        db.session.commit()
+
+        return jsonify({"message": "Image uploaded successfully"}), 201
+    else:
+        return jsonify({"error": "File type not allowed"}), 400

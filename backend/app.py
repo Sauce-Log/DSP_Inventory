@@ -8,7 +8,7 @@ from datetime import datetime
 from extensions import db
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -1,5 +1,6 @@
 from extensions import db
 from datetime import datetime
+import pytz
 
 class Inventory(db.Model):
     __tablename__ = 'inventory'
@@ -7,7 +8,7 @@ class Inventory(db.Model):
     name = db.Column(db.String(255), nullable=False)
     building = db.Column(db.String(255), nullable=False)
     room = db.Column(db.String(255), nullable=False)
-    last_updated = db.Column(db.DateTime, default=datetime.utcnow)
+    last_updated = db.Column(db.DateTime, default=datetime.now)
 
     images = db.relationship('Image', backref='inventory', cascade="all, delete-orphan")
     requests = db.relationship('Request', backref='inventory', cascade="all, delete-orphan")
