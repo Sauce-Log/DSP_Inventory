@@ -3,7 +3,6 @@ from flask import request, jsonify
 from models import Inventory, Image, Request
 from datetime import datetime
 import os
-from flask import request, jsonify
 from werkzeug.utils import secure_filename
 
 
