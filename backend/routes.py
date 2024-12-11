@@ -65,8 +65,12 @@ def get_item_images(item_id):
 
     # Return full URLs for the images
     image_list = [
-        {"image_url": url_for('static', filename=image.image_url, _external=True)}
+        {
+            "image_url": url_for('static', filename=image.image_url, _external=True),
+         "uploaded_at": image.uploaded_at
+        }
         for image in images
+        
     ]
     return jsonify(image_list)
 

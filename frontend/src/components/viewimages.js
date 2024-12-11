@@ -29,13 +29,15 @@ const ViewImages = ({ itemId, onClose }) => {
           <p>No images found for this item.</p>
         ) : (
           <div style={modalStyles.imageContainer}>
-            {images.map((img, index) => (
+          {images.map((img, index) => (
+            <div key={index} style={{ textAlign: 'center' }}>
               <img 
-                key={index} 
-                src={img.image_url}
+                src={img.image_url} 
                 alt={`Item ${itemId} - ${index + 1}`} 
-                style={modalStyles.image}
+                style={modalStyles.image} 
               />
+              <p>Uploaded: {new Date(img.uploaded_at).toLocaleString()}</p>
+            </div>
             ))}
           </div>
         )}

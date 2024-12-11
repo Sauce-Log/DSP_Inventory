@@ -18,7 +18,7 @@ class Image(db.Model):
     image_id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('inventory.item_id', ondelete='CASCADE'))
     image_url = db.Column(db.Text, nullable=False)
-    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    uploaded_at = db.Column(db.DateTime, default=datetime.now)
 
 class Request(db.Model):
     __tablename__ = 'requests'
