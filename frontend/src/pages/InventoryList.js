@@ -11,6 +11,25 @@ const InventoryList = () => {
   const [confirmingItem, setConfirmingItem] = useState(null);
   const [password, setPassword] = useState('');
 
+  const predefinedNames = ['Adjustable Desk', 'Chair', 'Table', 'Whiteboard'];
+  const predefinedBuildings = ['Social Sciences', 'Engineering', 'Library'];
+
+  const handleEditNameChange = (value) => {
+    if (value === 'custom') {
+      setEditingItem({ ...editingItem, name: '' });
+    } else {
+      setEditingItem({ ...editingItem, name: value });
+    }
+  };
+
+  const handleEditBuildingChange = (value) => {
+    if (value === 'custom') {
+      setEditingItem({ ...editingItem, building: '' });
+    } else {
+      setEditingItem({ ...editingItem, building: value });
+    }
+  };
+
   useEffect(() => {
     fetchInventory();
   }, []);
@@ -36,7 +55,6 @@ const InventoryList = () => {
     });
   };
 
-  // Handle View Images
   const handleViewImages = (itemId) => {
     setSelectedItemId(itemId);
   };
@@ -45,7 +63,6 @@ const InventoryList = () => {
     setSelectedItemId(null);
   };
 
-  // Handle Add Image
   const openAddImageModal = (itemId) => {
     setSelectedItemId(itemId);
     setShowAddImageModal(true);
@@ -56,7 +73,6 @@ const InventoryList = () => {
     setSelectedItemId(null);
   };
 
-  // Handle Edit Item
   const handleEdit = (item) => {
     setEditingItem({ ...item });
   };
@@ -75,7 +91,6 @@ const InventoryList = () => {
     }
   };
 
-  // Handle Remove Item
   const handleRemove = async () => {
     if (password === '510520') {
       try {
@@ -118,39 +133,63 @@ const InventoryList = () => {
         </ul>
       )}
 
-      {/* View Images Modal */}
       {selectedItemId && !showAddImageModal && (
         <ViewImages itemId={selectedItemId} onClose={closeImages} />
       )}
 
-      {/* Add Image Modal */}
       {showAddImageModal && (
         <AddImageModal itemId={selectedItemId} onClose={closeAddImageModal} />
       )}
 
-      {/* Edit Modal */}
       {editingItem && (
         <div style={modalStyles.overlay}>
           <div style={modalStyles.modal}>
             <h3>Edit Item</h3>
             <label>
-              Name: 
-              <input
-                type="text"
-                value={editingItem.name}
-                onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-              />
+              Name:
+              <select
+                value={predefinedNames.includes(editingItem.name) ? editingItem.name : 'custom'}
+                onChange={(e) => handleEditNameChange(e.target.value)}
+              >
+                {predefinedNames.map(name => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+                <option value="custom">Other</option>
+              </select>
+              {!predefinedNames.includes(editingItem.name) && (
+                <input
+                  type="text"
+                  value={editingItem.name}
+                  onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                />
+              )}
+            </label>
+
+            <label>
+              Building:
+              <select
+                value={predefinedBuildings.includes(editingItem.building) ? editingItem.building : 'custom'}
+                onChange={(e) => handleEditBuildingChange(e.target.value)}
+              >
+                {predefinedBuildings.map(building => (
+                  <option key={building} value={building}>
+                    {building}
+                  </option>
+                ))}
+                <option value="custom">Other</option>
+              </select>
+              {!predefinedBuildings.includes(editingItem.building) && (
+                <input
+                  type="text"
+                  value={editingItem.building}
+                  onChange={(e) => setEditingItem({ ...editingItem, building: e.target.value })}
+                />
+              )}
             </label>
             <label>
-              Building: 
-              <input
-                type="text"
-                value={editingItem.building}
-                onChange={(e) => setEditingItem({ ...editingItem, building: e.target.value })}
-              />
-            </label>
-            <label>
-              Room: 
+              Room:
               <input
                 type="text"
                 value={editingItem.room}
@@ -163,7 +202,6 @@ const InventoryList = () => {
         </div>
       )}
 
-      {/* Remove Confirmation Modal */}
       {confirmingItem && (
         <div style={modalStyles.overlay}>
           <div style={modalStyles.modal}>
@@ -183,7 +221,6 @@ const InventoryList = () => {
   );
 };
 
-// Modal Styles
 const modalStyles = {
   overlay: {
     position: 'fixed',
