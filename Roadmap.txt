@@ -1,4 +1,5 @@
-Add search/filter functionality: Filter to view only certain types of furniture/buidlings/etc.
-Add interactive campus map: Map of campus with items and their locations.
-Improve front end: Some actual css and such to make things look a little nicer.
-Create a proper readme to describe logic and general fucntionality.
+1. Add search/filter functionality: Filter to view only certain types of furniture/buidlings/etc.
+2. Add interactive campus map: Map of campus with items and their locations.
+3. Improve front end: Some actual css and such to make things look a little nicer.
+4. Create a proper readme to describe logic and general fucntionality.
+5. Update item name and building list to accurately represent choices
