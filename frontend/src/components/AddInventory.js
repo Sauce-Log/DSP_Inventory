@@ -10,8 +10,8 @@ const AddInventory = ({ onAdd }) => {
   const [customName, setCustomName] = useState('');
   const [customBuilding, setCustomBuilding] = useState('');
 
-  const predefinedNames = ['Adjustable Desk', 'Chair', 'Table', 'Whiteboard'];
-  const predefinedBuildings = ['Social Sciences', 'Engineering', 'Library'];
+  const predefinedNames = ['Adjustable Desk', 'Desk', 'Padded Chair', 'Podium'];
+  const predefinedBuildings = ['Social Sciences', 'Dwinelle', 'Evans', 'Physics', 'Wheeler', 'Cory', 'Haviland', 'Lewis', 'Wurster', 'Hearts', 'Morgan', 'VLSB'];
 
   const handleChange = e => {
     const { name, value } = e.target;
