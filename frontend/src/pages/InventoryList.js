@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import ViewImages from '../components/viewimages.js';
 import AddImageModal from '../components/AddImageModal.js';
+import button from 'bootstrap/dist/css/bootstrap.min.css';
 
 const InventoryList = () => {
   const [items, setItems] = useState([]);
@@ -121,13 +122,12 @@ const InventoryList = () => {
               <strong>Room:</strong> {item.room} |
               <strong>Last Updated:</strong> {formatDate(item.last_updated)}
               {' | '}
-              <button onClick={() => handleViewImages(item.item_id)}>View Images</button>
-              {' '}
-              <button onClick={() => openAddImageModal(item.item_id)}>Add Image</button>
-              {' '}
-              <button onClick={() => handleEdit(item)}>Edit</button>
-              {' '}
-              <button onClick={() => setConfirmingItem(item)}>Remove</button>
+              <div class="btn-group btn-group-sm" role="group" aria-label="Item Buttons">
+                <button className="btn btn-outline-primary" onClick={() => handleViewImages(item.item_id)}>View Images</button>
+                <button className="btn btn-outline-primary" onClick={() => openAddImageModal(item.item_id)}>Add Image</button>
+                <button className="btn btn-outline-primary" onClick={() => handleEdit(item)}>Edit</button>
+                <button className="btn btn-outline-danger" onClick={() => setConfirmingItem(item)}>Remove</button>
+              </div>
             </li>
           ))}
         </ul>
