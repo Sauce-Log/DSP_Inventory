@@ -16,7 +16,7 @@ const App = () => {
         <AddInventory onAdd={handleAdd} />
         <Routes>
           <Route path="/" element={<InventoryList />} />
-          {/* Add more routes here as your app grows */}
+          {/* Add more routes here*/}
         </Routes>
       </div>
     </Router>

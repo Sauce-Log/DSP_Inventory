@@ -9,7 +9,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^4.0.3",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
@@ -37,6 +37,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
     "jsx-ast-utils": "^3.3.5"
   }
 }
