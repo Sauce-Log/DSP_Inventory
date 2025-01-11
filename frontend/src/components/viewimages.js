@@ -23,8 +23,8 @@ const ViewImages = ({ itemId, onClose }) => {
   return (
     <div style={modalStyles.overlay}>
       <div style={modalStyles.modal}>
-        <h3>Images for Item ID: {itemId}</h3>
-        <button onClick={onClose} style={modalStyles.closeButton}>Close</button>
+        <h3 className="mb-3 text-center">Images for Item ID: {itemId}</h3>
+        <button className='btn btn-danger btn-sm' onClick={onClose} style={modalStyles.closeButton}>Close</button>
         {images.length === 0 ? (
           <p>No images found for this item.</p>
         ) : (
@@ -61,7 +61,7 @@ const modalStyles = {
     zIndex: 1000,
   },
   modal: {
-    background: '#fff',
+    background: '#282828',
     padding: '20px',
     borderRadius: '8px',
     width: '80%',

@@ -35,9 +35,10 @@ const AddImageModal = ({ itemId, onClose }) => {
         <div style={modalStyles.overlay}>
             <div style={modalStyles.modal}>
                 <h3>Upload Image for Item ID: {itemId}</h3>
-                <button onClick={onClose} style={modalStyles.closeButton}>Close</button>
+                <button className="btn btn-danger" onClick={onClose} style={modalStyles.closeButton}>Close</button>
                 <div>
                     <input
+                        class="form-control"
                         type="file"
                         accept="image/*"
                         onChange={handleFileChange}

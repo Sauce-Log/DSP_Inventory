@@ -12,24 +12,25 @@ const InventoryList = () => {
   const [confirmingItem, setConfirmingItem] = useState(null);
   const [password, setPassword] = useState('');
 
-  const predefinedNames = ['Adjustable Desk', 'Chair', 'Table', 'Whiteboard'];
-  const predefinedBuildings = ['Social Sciences', 'Engineering', 'Library'];
+  const predefinedNames = ['Adjustable Desk', 'Desk', 'Padded Chair', 'Podium'];
+  const predefinedBuildings = ['Social Sciences', 'Dwinelle', 'Evans', 'Physics', 'Wheeler', 'Cory', 'Haviland', 'Lewis', 'Wurster', 'Hearts', 'Morgan', 'VLSB'];
 
   const handleEditNameChange = (value) => {
     if (value === 'custom') {
-      setEditingItem({ ...editingItem, name: '' });
+      setEditingItem({ ...editingItem, name: 'custom', customName: '' });
     } else {
-      setEditingItem({ ...editingItem, name: value });
+      setEditingItem({ ...editingItem, name: value, customName: undefined });
     }
   };
-
+  
   const handleEditBuildingChange = (value) => {
     if (value === 'custom') {
-      setEditingItem({ ...editingItem, building: '' });
+      setEditingItem({ ...editingItem, building: 'custom', customBuilding: '' });
     } else {
-      setEditingItem({ ...editingItem, building: value });
+      setEditingItem({ ...editingItem, building: value, customBuilding: undefined });
     }
   };
+  
 
   useEffect(() => {
     fetchInventory();
@@ -81,8 +82,8 @@ const InventoryList = () => {
   const saveEdit = async () => {
     try {
       await api.put(`/inventory/${editingItem.item_id}`, {
-        name: editingItem.name,
-        building: editingItem.building,
+        name: editingItem.name === 'custom' ? editingItem.customName : editingItem.name,
+        building: editingItem.building === 'custom' ? editingItem.customBuilding : editingItem.building,
         room: editingItem.room,
       });
       setEditingItem(null);
@@ -109,7 +110,7 @@ const InventoryList = () => {
 
   return (
     <div>
-      <h2>Inventory Items</h2>
+      <h2 className="mb-4 text-center">Inventory Items</h2>
       {items.length === 0 ? (
         <p>No inventory items found.</p>
       ) : (
@@ -143,14 +144,20 @@ const InventoryList = () => {
 
       {editingItem && (
         <div style={modalStyles.overlay}>
-          <div style={modalStyles.modal}>
-            <h3>Edit Item</h3>
-            <label>
+          <div style={modalStyles.modal} className="p-3 border rounded bg-dark">
+            <h3 className="mb-3 text-center text-light">Edit Inventory Item</h3>
+
+            {/* Name Field */}
+            <label className="form-label text-light">
               Name:
               <select
+                className="form-select form-select-sm mb-2"
                 value={predefinedNames.includes(editingItem.name) ? editingItem.name : 'custom'}
                 onChange={(e) => handleEditNameChange(e.target.value)}
               >
+                <option value="choose" disabled hidden>
+                  Choose here
+                </option>
                 {predefinedNames.map(name => (
                   <option key={name} value={name}>
                     {name}
@@ -158,21 +165,29 @@ const InventoryList = () => {
                 ))}
                 <option value="custom">Other</option>
               </select>
-              {!predefinedNames.includes(editingItem.name) && (
+              {editingItem.name === 'custom' && (
                 <input
+                  className="form-control"
                   type="text"
-                  value={editingItem.name}
-                  onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                  placeholder="Enter custom item"
+                  value={editingItem.customName || ''}
+                  onChange={(e) => setEditingItem({ ...editingItem, customName: e.target.value })}
+                  required
                 />
               )}
             </label>
 
-            <label>
+            {/* Building Field */}
+            <label className="form-label text-light">
               Building:
               <select
+                className="form-select form-select-sm mb-2"
                 value={predefinedBuildings.includes(editingItem.building) ? editingItem.building : 'custom'}
                 onChange={(e) => handleEditBuildingChange(e.target.value)}
               >
+                <option value="choose" disabled hidden>
+                  Choose here
+                </option>
                 {predefinedBuildings.map(building => (
                   <option key={building} value={building}>
                     {building}
@@ -180,24 +195,39 @@ const InventoryList = () => {
                 ))}
                 <option value="custom">Other</option>
               </select>
-              {!predefinedBuildings.includes(editingItem.building) && (
+              {editingItem.building === 'custom' && (
                 <input
+                  className="form-control"
                   type="text"
-                  value={editingItem.building}
-                  onChange={(e) => setEditingItem({ ...editingItem, building: e.target.value })}
+                  placeholder="Enter custom building"
+                  value={editingItem.customBuilding || ''}
+                  onChange={(e) => setEditingItem({ ...editingItem, customBuilding: e.target.value })}
+                  required
                 />
               )}
             </label>
-            <label>
+
+
+            {/* Room Field */}
+            <label className="form-label text-light">
               Room:
               <input
+                className="form-control mb-3"
                 type="text"
+                placeholder="Room"
                 value={editingItem.room}
                 onChange={(e) => setEditingItem({ ...editingItem, room: e.target.value })}
+                required
               />
             </label>
-            <button onClick={saveEdit}>Save</button>
-            <button onClick={() => setEditingItem(null)}>Cancel</button>
+
+            {/* Save and Cancel Buttons */}
+            <button onClick={saveEdit} className="btn btn-primary w-100 mb-2">
+              Save
+            </button>
+            <button onClick={() => setEditingItem(null)} className="btn btn-danger w-100">
+              Cancel
+            </button>
           </div>
         </div>
       )}
@@ -212,8 +242,8 @@ const InventoryList = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="btn btn-success btn-sm" onClick={handleRemove}>Confirm</button>
-            <button className="btn btn-danger btn-sm" onClick={() => setConfirmingItem(null)}>Cancel</button>
+            <button className="btn btn-success btn-sm mt-2" onClick={handleRemove} >Confirm</button>
+            <button className="btn btn-danger btn-sm" onClick={() => setConfirmingItem(null)} style={modalStyles.closeButton}>Cancel</button>
           </div>
         </div>
       )}
@@ -234,8 +264,13 @@ const modalStyles = {
     justifyContent: 'center',
     zIndex: 1000,
   },
+  closeButton: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+},
   modal: {
-    background: '#fff',
+    background: '#282828',
     padding: '20px',
     borderRadius: '8px',
     width: '80%',
