@@ -56,96 +56,116 @@ const AddInventory = ({ onAdd }) => {
   };
 
   return (
-  <form onSubmit={handleSubmit} className="p-3 border rounded bg-dark">
-    <h3 className="mb-3 text-center text-white">Add New Inventory Item</h3>
+    <div className="p-3 border rounded bg-dark">
+      {/* Toggle Button */}
+      <div class="col text-center">
+      <button
+        className="btn btn-lg btn-info mx-auto my-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#addInventoryForm"
+        aria-expanded="false"
+        aria-controls="addInventoryForm"
+      >
+        Add New Inventory Item
+      </button>
+      </div>
 
-    {/* Name */}
-    <div className="mb-3">
-      <label className="form-label text-white">Name:</label>
-      <div className="input-group">
-        <select
-          className="form-select form-select-sm bg-dark text-white"
-          value={formData.name || 'choose'}
-          onChange={(e) => handleNameChange(e.target.value)}
-        >
-          <option value="choose" disabled hidden>
-            Choose here
-          </option>
-          {predefinedNames.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-          <option value="custom">Other</option>
-        </select>
-        {formData.name === 'custom' && (
-          <input
-            className="form-control bg-dark text-white"
-            type="text"
-            placeholder="Enter custom item"
-            value={customName}
-            onChange={(e) => setCustomName(e.target.value)}
-            required
-          />
-        )}
+      {/* Collapsible Form */}
+      <div className="collapse" id="addInventoryForm">
+        <div className="card card-body bg-dark text-white">
+          <form onSubmit={handleSubmit}>
+            <h3 className="mb-3 text-center">Add New Inventory Item</h3>
+
+            {/* Name Field */}
+            <div className="mb-3">
+              <label className="form-label">Name:</label>
+              <div className="input-group">
+                <select
+                  className="form-select form-select-sm bg-dark text-white"
+                  value={formData.name || 'choose'}
+                  onChange={(e) => handleNameChange(e.target.value)}
+                >
+                  <option value="choose" disabled hidden>
+                    Choose here
+                  </option>
+                  {predefinedNames.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                  <option value="custom">Other</option>
+                </select>
+                {formData.name === 'custom' && (
+                  <input
+                    className="form-control bg-dark text-white"
+                    type="text"
+                    placeholder="Enter custom item"
+                    value={customName}
+                    onChange={(e) => setCustomName(e.target.value)}
+                    required
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Building Field */}
+            <div className="mb-3">
+              <label className="form-label">Building:</label>
+              <div className="input-group">
+                <select
+                  className="form-select form-select-sm bg-dark text-white"
+                  value={formData.building || 'choose'}
+                  onChange={(e) => handleBuildingChange(e.target.value)}
+                >
+                  <option value="choose" disabled hidden>
+                    Choose here
+                  </option>
+                  {predefinedBuildings.map((building) => (
+                    <option key={building} value={building}>
+                      {building}
+                    </option>
+                  ))}
+                  <option value="custom">Other</option>
+                </select>
+                {formData.building === 'custom' && (
+                  <input
+                    className="form-control bg-dark text-white"
+                    type="text"
+                    placeholder="Enter custom building"
+                    value={customBuilding}
+                    onChange={(e) => setCustomBuilding(e.target.value)}
+                    required
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Room Field */}
+            <div className="mb-3">
+              <label className="form-label">Room:</label>
+              <div className="input-group">
+                <input
+                  className="form-control bg-dark text-white"
+                  type="text"
+                  name="room"
+                  placeholder="Room"
+                  value={formData.room}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button type="submit" className="btn btn-primary w-100">
+              Add Item
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-
-    {/* Building Field */}
-    <div className="mb-3">
-      <label className="form-label text-white">Building:</label>
-      <div className="input-group">
-        <select
-          className="form-select form-select-sm bg-dark text-white"
-          value={formData.building || 'choose'}
-          onChange={(e) => handleBuildingChange(e.target.value)}
-        >
-          <option value="choose" disabled hidden>
-            Choose here
-          </option>
-          {predefinedBuildings.map((building) => (
-            <option key={building} value={building}>
-              {building}
-            </option>
-          ))}
-          <option value="custom">Other</option>
-        </select>
-        {formData.building === 'custom' && (
-          <input
-            className="form-control bg-dark text-white"
-            type="text"
-            placeholder="Enter custom building"
-            value={customBuilding}
-            onChange={(e) => setCustomBuilding(e.target.value)}
-            required
-          />
-        )}
-      </div>
-    </div>
-
-    {/* Room Field */}
-    <div className="mb-3">
-      <label className="form-label text-white">Room:</label>
-      <div className="input-group">
-        <input
-          className="form-control bg-dark text-white"
-          type="text"
-          name="room"
-          placeholder="Room"
-          value={formData.room}
-          onChange={handleChange}
-          required
-        />
-      </div>
-    </div>
-
-    {/* Submit Button */}
-    <button type="submit" className="btn btn-primary w-100">
-      Add Item
-    </button>
-  </form>
-);
-
+  );
 };
 
 export default AddInventory;
