@@ -12,8 +12,11 @@ const InventoryList = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [confirmingItem, setConfirmingItem] = useState(null);
   const [password, setPassword] = useState('');
+  const [filteredItems, setFilteredItems] = useState([]); // For displaying filtered results
+  const [searchQuery, setSearchQuery] = useState(''); // For the search input
+  const [selectedFilter, setSelectedFilter] = useState('all'); // Filter type: all, building, item, etc.
 
-  
+
   const handleEditNameChange = (value) => {
     if (value === 'custom') {
       setEditingItem({ ...editingItem, name: 'custom', customName: '' });
@@ -35,10 +38,16 @@ const InventoryList = () => {
     fetchInventory();
   }, []);
 
+  useEffect(() => {
+    applyFilter();
+  }, [searchQuery, selectedFilter, items]);
+
+
   const fetchInventory = async () => {
     try {
       const response = await api.get('/inventory');
       setItems(response.data);
+      setFilteredItems(response.data);
     } catch (error) {
       console.error('Error fetching inventory:', error);
     }
@@ -107,14 +116,67 @@ const InventoryList = () => {
     }
   };
 
+  const applyFilter = () => {
+
+    console.log("Search Query:", searchQuery);
+    console.log("Selected Filter:", selectedFilter);
+
+    if (!searchQuery) {
+      console.log("No search query entered. Displaying all items.");
+      setFilteredItems(items); // If no query, show all items
+      return;
+    }
+
+    const lowerCaseQuery = searchQuery.toLowerCase();
+
+    const filtered = items.filter((item) => {
+      switch (selectedFilter) {
+        case 'name':
+          return item.name.toLowerCase().includes(lowerCaseQuery);
+        case 'building':
+          return item.building.toLowerCase().includes(lowerCaseQuery);
+        default:
+          return (
+            item.name.toLowerCase().includes(lowerCaseQuery) ||
+            item.building.toLowerCase().includes(lowerCaseQuery)
+          );
+      }
+    });
+    console.log("Filtered Items:", filtered);
+    setFilteredItems(filtered);
+  };
+
+
   return (
     <div className="container">
       <h2 className="mt-3 mb-4 text-center">Inventory Items</h2>
-      {items.length === 0 ? (
+
+      <div className="mb-4">
+        <div className="d-flex justify-content-center">
+          <input
+            type="text"
+            className="form-control w-50 bg-dark text-white"
+            placeholder="Search inventory..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <select
+            className="form-select w-25 ms-2 bg-dark text-white"
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+          >
+            <option value="all">Filter By</option>
+            <option value="name">Item Name</option>
+            <option value="building">Building</option>
+          </select>
+        </div>
+      </div>
+
+      {filteredItems.length === 0 ? (
         <p className="text-center">No inventory items found.</p>
       ) : (
         <div className="row">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <div key={item.item_id} className="col-md-4 mb-4">
               <div className="card bg-dark text-white shadow-sm h-100">
                 <div className="card-body">
@@ -303,6 +365,7 @@ const modalStyles = {
     position: 'relative',
   },
 };
+
 
 
 

@@ -56,21 +56,22 @@ const AddInventory = ({ onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-3 border rounded bg-dark">
-      <h3 className="mb-3 text-center">Add New Inventory Item</h3>
+  <form onSubmit={handleSubmit} className="p-3 border rounded bg-dark">
+    <h3 className="mb-3 text-center text-white">Add New Inventory Item</h3>
 
     {/* Name */}
-      <label className="form-label">
-        Name:
+    <div className="mb-3">
+      <label className="form-label text-white">Name:</label>
+      <div className="input-group">
         <select
-          className="form-select form-select-sm mb-2"
+          className="form-select form-select-sm bg-dark text-white"
           value={formData.name || 'choose'}
           onChange={(e) => handleNameChange(e.target.value)}
         >
           <option value="choose" disabled hidden>
             Choose here
           </option>
-          {predefinedNames.map(name => (
+          {predefinedNames.map((name) => (
             <option key={name} value={name}>
               {name}
             </option>
@@ -79,7 +80,7 @@ const AddInventory = ({ onAdd }) => {
         </select>
         {formData.name === 'custom' && (
           <input
-            className="form-control"
+            className="form-control bg-dark text-white"
             type="text"
             placeholder="Enter custom item"
             value={customName}
@@ -87,30 +88,31 @@ const AddInventory = ({ onAdd }) => {
             required
           />
         )}
-      </label>
-  
-      {/* Building Field */}
-      <label className="form-label">
-        Building:
+      </div>
+    </div>
+
+    {/* Building Field */}
+    <div className="mb-3">
+      <label className="form-label text-white">Building:</label>
+      <div className="input-group">
         <select
-          className="form-select form-select-sm mb-2"
+          className="form-select form-select-sm bg-dark text-white"
           value={formData.building || 'choose'}
           onChange={(e) => handleBuildingChange(e.target.value)}
         >
           <option value="choose" disabled hidden>
             Choose here
           </option>
-          {predefinedBuildings.map(building => (
+          {predefinedBuildings.map((building) => (
             <option key={building} value={building}>
               {building}
             </option>
           ))}
           <option value="custom">Other</option>
-
         </select>
         {formData.building === 'custom' && (
           <input
-            className="form-control"
+            className="form-control bg-dark text-white"
             type="text"
             placeholder="Enter custom building"
             value={customBuilding}
@@ -118,13 +120,15 @@ const AddInventory = ({ onAdd }) => {
             required
           />
         )}
-      </label>
-  
-      {/* Room Field */}
-      <label className="form-label">
-        Room:
+      </div>
+    </div>
+
+    {/* Room Field */}
+    <div className="mb-3">
+      <label className="form-label text-white">Room:</label>
+      <div className="input-group">
         <input
-          className="form-control mb-3"
+          className="form-control bg-dark text-white"
           type="text"
           name="room"
           placeholder="Room"
@@ -132,14 +136,16 @@ const AddInventory = ({ onAdd }) => {
           onChange={handleChange}
           required
         />
-      </label>
-  
-      {/* Submit Button */}
-      <button type="submit" className="btn btn-primary w-100">
-        Add Item
-      </button>
-    </form>
-  );
+      </div>
+    </div>
+
+    {/* Submit Button */}
+    <button type="submit" className="btn btn-primary w-100">
+      Add Item
+    </button>
+  </form>
+);
+
 };
 
 export default AddInventory;
