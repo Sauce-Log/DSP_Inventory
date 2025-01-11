@@ -3,6 +3,7 @@ import api from '../services/api';
 import ViewImages from '../components/viewimages.js';
 import AddImageModal from '../components/AddImageModal.js';
 import button from 'bootstrap/dist/css/bootstrap.min.css';
+import { predefinedNames, predefinedBuildings } from '../constants';
 
 const InventoryList = () => {
   const [items, setItems] = useState([]);
@@ -12,9 +13,7 @@ const InventoryList = () => {
   const [confirmingItem, setConfirmingItem] = useState(null);
   const [password, setPassword] = useState('');
 
-  const predefinedNames = ['Adjustable Desk', 'Desk', 'Padded Chair', 'Podium'];
-  const predefinedBuildings = ['Social Sciences', 'Dwinelle', 'Evans', 'Physics', 'Wheeler', 'Cory', 'Haviland', 'Lewis', 'Wurster', 'Hearts', 'Morgan', 'VLSB'];
-
+  
   const handleEditNameChange = (value) => {
     if (value === 'custom') {
       setEditingItem({ ...editingItem, name: 'custom', customName: '' });
@@ -109,30 +108,56 @@ const InventoryList = () => {
   };
 
   return (
-    <div>
-      <h2 className="mb-4 text-center">Inventory Items</h2>
+    <div className="container">
+      <h2 className="mt-3 mb-4 text-center">Inventory Items</h2>
       {items.length === 0 ? (
-        <p>No inventory items found.</p>
+        <p className="text-center">No inventory items found.</p>
       ) : (
-        <ul>
+        <div className="row">
           {items.map((item) => (
-            <li key={item.item_id}>
-              <strong>ID:</strong> {item.item_id} | 
-              <strong>Name:</strong> {item.name} | 
-              <strong>Building:</strong> {item.building} | 
-              <strong>Room:</strong> {item.room} |
-              <strong>Last Updated:</strong> {formatDate(item.last_updated)}
-              {' | '}
-              <div class="btn-group btn-group-sm" role="group" aria-label="Item Buttons">
-                <button className="btn btn-outline-primary" onClick={() => handleViewImages(item.item_id)}>View Images</button>
-                <button className="btn btn-outline-primary" onClick={() => openAddImageModal(item.item_id)}>Add Image</button>
-                <button className="btn btn-outline-primary" onClick={() => handleEdit(item)}>Edit</button>
-                <button className="btn btn-outline-danger" onClick={() => setConfirmingItem(item)}>Remove</button>
+            <div key={item.item_id} className="col-md-4 mb-4">
+              <div className="card bg-dark text-white shadow-sm h-100">
+                <div className="card-body">
+                  <h5 className="card-title">Item: {item.name}</h5>
+                  <p className="card-text">
+                    <strong>ID:</strong> {item.item_id} <br />
+                    <strong>Building:</strong> {item.building} <br />
+                    <strong>Room:</strong> {item.room} <br />
+                    <strong>Last Updated:</strong> {formatDate(item.last_updated)}
+                  </p>
+                  <div className="btn-group btn-group-sm w-100" role="group" aria-label="Item Buttons">
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => handleViewImages(item.item_id)}
+                    >
+                      View Images
+                    </button>
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => openAddImageModal(item.item_id)}
+                    >
+                      Add Image
+                    </button>
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => handleEdit(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-outline-danger"
+                      onClick={() => setConfirmingItem(item)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
+    
 
       {selectedItemId && !showAddImageModal && (
         <ViewImages itemId={selectedItemId} onClose={closeImages} />
