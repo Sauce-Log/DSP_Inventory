@@ -151,6 +151,15 @@ const InventoryList = () => {
     <div className="container">
       <h2 className="mt-3 mb-4 text-center">Inventory Items</h2>
 
+      <style>
+    {`
+      .bg-dark::placeholder {
+        color: white;
+        opacity: 1;
+      }
+    `}
+  </style>
+
       <div className="mb-4">
         <div className="d-flex justify-content-center">
           <input

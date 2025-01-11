@@ -149,7 +149,7 @@ const AddInventory = ({ onAdd }) => {
                   className="form-control bg-dark text-white"
                   type="text"
                   name="room"
-                  placeholder="Room"
+                  placeholder="Enter Room Number"
                   value={formData.room}
                   onChange={handleChange}
                   required
