@@ -18,31 +18,36 @@ const AddInventory = ({ onAdd }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleNameChange = value => {
+  const handleNameChange = (value) => {
     if (value === 'custom') {
-      setFormData({ ...formData, name: '' });
+      setFormData({ ...formData, name: 'custom' });
+      setCustomName('');
     } else {
       setFormData({ ...formData, name: value });
     }
   };
-
-  const handleBuildingChange = value => {
+  
+  const handleBuildingChange = (value) => {
     if (value === 'custom') {
-      setFormData({ ...formData, building: '' });
+      setFormData({ ...formData, building: 'custom' });
+      setCustomBuilding('');
     } else {
       setFormData({ ...formData, building: value });
     }
   };
+  
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const finalData = {
+  
+    const dataToSubmit = {
       ...formData,
-      name: formData.name || customName,
-      building: formData.building || customBuilding,
+      name: formData.name === 'custom' ? customName : formData.name, /* Check for custom inputs when submitting data */
+      building: formData.building === 'custom' ? customBuilding : formData.building,
     };
+  
     try {
-      await api.post('/inventory', finalData);
+      await api.post('/inventory', dataToSubmit);
       onAdd();
       setFormData({ name: '', building: '', room: '' });
       setCustomName('');
@@ -53,14 +58,20 @@ const AddInventory = ({ onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add New Inventory Item</h3>
-      <label>
+    <form onSubmit={handleSubmit} className="p-3 border rounded bg-dark">
+      <h3 className="mb-3 text-center">Add New Inventory Item</h3>
+
+    {/* Name */}
+      <label className="form-label">
         Name:
         <select
-          value={predefinedNames.includes(formData.name) ? formData.name : 'custom'}
-          onChange={e => handleNameChange(e.target.value)}
+          className="form-select form-select-sm mb-2"
+          value={formData.name || 'choose'}
+          onChange={(e) => handleNameChange(e.target.value)}
         >
+          <option value="choose" disabled hidden>
+            Choose here
+          </option>
           {predefinedNames.map(name => (
             <option key={name} value={name}>
               {name}
@@ -68,44 +79,54 @@ const AddInventory = ({ onAdd }) => {
           ))}
           <option value="custom">Other</option>
         </select>
-        {!predefinedNames.includes(formData.name) && (
+        {formData.name === 'custom' && (
           <input
+            className="form-control"
             type="text"
-            placeholder="Enter custom name"
+            placeholder="Enter custom item"
             value={customName}
-            onChange={e => setCustomName(e.target.value)}
+            onChange={(e) => setCustomName(e.target.value)}
             required
           />
         )}
       </label>
-
-      <label>
+  
+      {/* Building Field */}
+      <label className="form-label">
         Building:
         <select
-          value={predefinedBuildings.includes(formData.building) ? formData.building : 'custom'}
-          onChange={e => handleBuildingChange(e.target.value)}
+          className="form-select form-select-sm mb-2"
+          value={formData.building || 'choose'}
+          onChange={(e) => handleBuildingChange(e.target.value)}
         >
+          <option value="choose" disabled hidden>
+            Choose here
+          </option>
           {predefinedBuildings.map(building => (
             <option key={building} value={building}>
               {building}
             </option>
           ))}
           <option value="custom">Other</option>
+
         </select>
-        {!predefinedBuildings.includes(formData.building) && (
+        {formData.building === 'custom' && (
           <input
+            className="form-control"
             type="text"
             placeholder="Enter custom building"
             value={customBuilding}
-            onChange={e => setCustomBuilding(e.target.value)}
+            onChange={(e) => setCustomBuilding(e.target.value)}
             required
           />
         )}
       </label>
-
-      <label>
+  
+      {/* Room Field */}
+      <label className="form-label">
         Room:
         <input
+          className="form-control mb-3"
           type="text"
           name="room"
           placeholder="Room"
@@ -114,7 +135,11 @@ const AddInventory = ({ onAdd }) => {
           required
         />
       </label>
-      <button type="submit">Add Item</button>
+  
+      {/* Submit Button */}
+      <button type="submit" className="btn btn-primary w-100">
+        Add Item
+      </button>
     </form>
   );
 };

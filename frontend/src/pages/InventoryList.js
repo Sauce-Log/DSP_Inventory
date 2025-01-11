@@ -208,18 +208,18 @@ const InventoryList = () => {
             <h3>Confirm Removal</h3>
             <p>Enter password to delete this item:</p>
             <input
-              type="text"
+              type="password" class="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={handleRemove}>Confirm</button>
-            <button onClick={() => setConfirmingItem(null)}>Cancel</button>
+            <button className="btn btn-success btn-sm" onClick={handleRemove}>Confirm</button>
+            <button className="btn btn-danger btn-sm" onClick={() => setConfirmingItem(null)}>Cancel</button>
           </div>
         </div>
       )}
     </div>
   );
-};
+};  
 
 const modalStyles = {
   overlay: {
@@ -243,5 +243,7 @@ const modalStyles = {
     position: 'relative',
   },
 };
+
+
 
 export default InventoryList;
